@@ -44,3 +44,19 @@ If you use this repository directly or indirectly, you are bound by and agree to
 
 ## Data policy
 Any given JSON file within [silo/](./silo/), is created by a [Securelay](https://securelay.github.io) user with a private key, in order to be disseminated publicly. If you are such a user, you understand that data in your JSON file is/will be in the public domain once it appears in this repository. Although JSONs can be deleted from this repository by the creator through Securelay, the data may persist on GitHub and different CDN servers that may have cached the data.
+
+## Contact
+Email: [securelay.github.io@gmail.com](mailto:securelay.github.io@gmail.com)
+
+## Note to maintainer
+- `cd` to local clone of this repository
+- `git switch dev`
+- Modify code or documentation in the `dev` branch
+- Commit and push to the `dev` branch
+- Run:
+```bash
+./push_dev_to_main_as_only_commit
+```
+This ensures stored JSONs are not lost form `main`.
+
+:warning: DONOT modify the contents of the `main` branch manually, as it may result in data loss. Use [push_dev_to_main_as_only_commit](./push_dev_to_main_as_only_commit) for pushing necessary code/documentation changes to main from dev.

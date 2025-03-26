@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+# Brief: Push changes in the `dev` branch to `main`, without losing stored JSONs in `main`.
 git switch dev
 git diff-index --quiet dev || { echo 'Commit to dev first. Aborting...'; exit 1 ;}
 git branch -D main
