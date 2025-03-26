@@ -1,0 +1,38 @@
+# Brief: Expire JSON files from /silo based on their expiry in /.expiry
+# Note: Must be run on default branch
+
+name: Expire
+
+on:
+  workflow_dispatch: # Enables manual triggering
+  schedule: # Enables scheduled triggerring
+    - cron: '30 1 * * *' # Trigger at around 1:30 AM every day
+
+concurrency:
+  group: ${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+
+  expire:
+    
+    permissions:
+      contents: write
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          check-latest: false
+      - name: Expire # Should not fail even if there is nothing to expire or delete
+        run: npm run expire
+      - name: Push to GitHub # Should not fail even if there is nothing to commit
+        run: |
+          git config --global user.name 'Securelay Bot'
+          git config --global user.email 'securelay.github.io@gmail.com'
+          git add .
+          git diff-index --quiet HEAD || \
+          { git commit -m 'Commit by @github-actions/pull.yml' && git push; }

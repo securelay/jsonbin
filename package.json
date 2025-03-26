@@ -1,0 +1,11 @@
+{
+  "type": "module",
+  "dependencies": {
+    "@octokit/core": "^6.1.4",
+    "@upstash/redis": "^1.34.6"
+  },
+  "scripts": {
+    "pull": "node src/pull.js",
+    "expire": "node src/expire.js"
+  }
+}
