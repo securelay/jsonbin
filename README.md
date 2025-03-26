@@ -57,6 +57,6 @@ Email: [securelay.github.io@gmail.com](mailto:securelay.github.io@gmail.com)
 ```bash
 ./push_dev_to_main_as_only_commit
 ```
-This ensures stored JSONs are not lost form `main`.
+This ensures stored JSONs are not lost from `main`.
 
-:warning: DONOT modify the contents of the `main` branch manually, as it may result in data loss. Use [push_dev_to_main_as_only_commit](./push_dev_to_main_as_only_commit) for pushing necessary code/documentation changes to main from dev.
+:warning: DONOT modify the contents of the `main` branch manually, as it may result in data loss. Use [push_dev_to_main_as_only_commit](./push_dev_to_main_as_only_commit) for pushing necessary code/documentation changes to `main` from `dev`.
