@@ -18,7 +18,7 @@ The stored JSONs may be accessed publicly:
 Both these options however, may cache the JSON for a while, because of which, any changes brought about by a commit (such as creating/updating/deleting a JSON) may not be reflected immediately.
 
 ## Workflows
-The following workflows keep this repo up-to-date. All workflows share the same concurrency key, so that only one workflow runs at any given time.
+The following workflows keep this repo up-to-date. All workflows share the same concurrency key, so that only one workflow runs at any given time. All workflows are triggerred only if they belong to the default branch.
 
 ### Pull
 New JSONs are pulled from upstream by the workflow, [pull.yml](./.github/workflows/pull.yml). This workflow is triggered on demand by the `workflow_dispatch` event. It also runs regularly as a scheduled cronjob.

@@ -35,4 +35,4 @@ jobs:
           git config --global user.email 'securelay.github.io@gmail.com'
           git add .
           git diff-index --quiet HEAD || \
-          { git commit -m 'Commit by @github-actions/pull.yml' && git push; }
+          { git commit --amend -m 'Commit by @github-actions for Expire' && git push -f; }
