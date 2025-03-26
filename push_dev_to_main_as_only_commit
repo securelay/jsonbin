@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+git switch dev
+git diff-index --quiet dev || { echo 'Commit to dev first. Aborting...'; exit 1 ;}
+git branch -D main
+git checkout --orphan=main dev
+git diff-index --quiet dev || { echo 'Diff with dev exists. Aborting...'; exit 1 ;}
+git commit -m "Commit by ${0}"
+git push -fu origin main
+git switch dev
