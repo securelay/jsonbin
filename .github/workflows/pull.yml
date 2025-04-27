@@ -1,0 +1,48 @@
+# Brief: This workflow pulls data from upstream database and stores in this repo
+# Note: Must be run on default branch
+
+name: Pull
+
+on:
+  workflow_dispatch: # Enables manual triggering
+  schedule: # Enables scheduled triggerring. Max frequency allowed by GitHub is, trigger every 5 mins
+    - cron: '5/10 * * * *' # Trigger every 10 mins starting from 5th min of every hour
+                           # Not starting at the start of every hour, as recommended by GitHub, to avoid delay
+                           # Ref: https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows#schedule
+
+concurrency:
+  group: ${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+
+  pull:
+    
+    permissions:
+      contents: write
+      issues: write
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          check-latest: false
+          cache: 'npm'
+      - run: npm ci # Clean, frozen install. Doesn't modify package.json or package-lock.json
+      - name: Pull and add to filesystem # Should not fail even if there is nothing to add
+        env:
+          GITHUB_OWNER_REPO: ${{ github.repository }}
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+          UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+        run: npm run pull
+      - name: Push to GitHub # Should not fail even if there is nothing to commit
+        run: |
+          git config --global user.name 'Securelay Bot'
+          git config --global user.email 'securelay.github.io@gmail.com'
+          git add .
+          git diff-index --quiet HEAD || \
+          { git commit --amend --reset-author -m 'Commit by @github-actions for Pull' && git push -f; }
