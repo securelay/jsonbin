@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Brief: Push changes in the `dev` branch to `main`, without losing stored JSONs in `main`.
+git switch dev
+git diff-index --quiet dev || { echo 'Commit to dev first. Aborting...'; exit 1 ;}
+git branch -D main
+git fetch origin main:main # Overwrites main branch and switches to it
+git switch main
+git merge dev --squash --allow-unrelated-histories -Xtheirs
+git status
+echo "Do you wish to proceed with amend commit and force push?"
+select yn in "Yes" "No"; do
+    case "${yn}" in
+        Yes ) git commit --amend --reset-author -m "Commit by ${0}"; git push -f origin main; break;;
+        No ) echo "I'd leave you to continue from here!"; exit;;
+    esac
+done
+git switch dev
